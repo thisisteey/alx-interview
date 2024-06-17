@@ -1,46 +1,37 @@
 #!/usr/bin/python3
-
-""" script that reads stdin line by line and computes metrics """
-
+"""Module for function that displays HTTP request stats from the stdin"""
 import sys
 
 
-def printStatus(dic, size):
-    """ Prints information """
-    print("File size: {:d}".format(size))
-    for i in sorted(dic.keys()):
-        if dic[i] != 0:
-            print("{}: {:d}".format(i, dic[i]))
+def print_statistics(status_dict, total_size):
+    """Prints the accumulated file size and status code counts"""
+    print(f"File size: {total_size}")
+    for code in sorted(status_dict.keys()):
+        if status_dict[code] != 0:
+            print(f"{code}: {status_dict[code]}")
 
 
-# sourcery skip: use-contextlib-suppress
-statusCodes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-               "404": 0, "405": 0, "500": 0}
-
-count = 0
-size = 0
+http_statusCodes = {"200": 0, "301": 0, "400": 0, "401": 0,
+                    "403": 0, "404": 0, "405": 0, "500": 0}
+log_count = 0
+total_size = 0
 
 try:
     for line in sys.stdin:
-        if count != 0 and count % 10 == 0:
-            printStatus(statusCodes, size)
-
-        stlist = line.split()
-        count += 1
-
+        if log_count != 0 and log_count % 10 == 0:
+            print_statistics(http_statusCodes, total_size)
+        line_tokens = line.split()
+        log_count += 1
         try:
-            size += int(stlist[-1])
+            total_size += int(line_tokens[-1])
         except Exception:
             pass
-
         try:
-            if stlist[-2] in statusCodes:
-                statusCodes[stlist[-2]] += 1
+            if line_tokens[-2] in http_statusCodes:
+                http_statusCodes[line_tokens[-2]] += 1
         except Exception:
             pass
-    printStatus(statusCodes, size)
-
-
+    print_statistics(http_statusCodes, total_size)
 except KeyboardInterrupt:
-    printStatus(statusCodes, size)
+    print_statistics(http_statusCodes, total_size)
     raise
