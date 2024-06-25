@@ -1,17 +1,29 @@
 #!/usr/bin/python3
-"""Module to check if a list of integers are valid UTF-8 code points"""
+"""
+Validate UTF-8 encoded text.
+
+This is a simple example of how to use the utf8_validation module.
+"""
 
 
 def validUTF8(data):
-    """Checks if a data (list of integers) has a valid UTF-8 encoding"""
-    for numberBytes in data:
-        if numberBytes >> 7 == 0:
+    """
+    Check if data os a valid UTF-8 encoding
+
+    Args:
+        data: A list of bytes.
+
+    Returns:
+        True if data is a valid UTF-8 encoding, False otherwise.
+    """
+    for byte in data:
+        if byte >> 7 == 0:
             continue
-        elif numberBytes >> 5 == 0b110:
+        elif byte >> 5 == 0b110:
             continue
-        elif numberBytes >> 4 == 0b1110:
+        elif byte >> 4 == 0b1110:
             continue
-        elif numberBytes >> 3 == 0b11110:
+        elif byte >> 3 == 0b11110:
             continue
         else:
             return False
