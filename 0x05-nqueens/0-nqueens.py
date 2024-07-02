@@ -1,54 +1,40 @@
 #!/usr/bin/python3
-""" N QUEENS ALGORITHM WITH BACKTRACKING (RECURSION INSIDE LOOP) """
+"""N Queens algorithm using backtracking with recursion"""
 import sys
 
 
-class NQueen:
-    """ Class for solving N Queen Problem """
+class NQueens:
+    """Class to solve N Queens algorithm problem"""
 
-    def __init__(self, n):
-        """ Global Variables """
-        self.n = n
-        self.x = [0 for i in range(n + 1)]
-        self.res = []
+    def __init__(self, size):
+        """Initialise the NQueens class"""
+        self.size = size
+        self.queenPos = [0 for pos in range(size + 1)]
+        self.solutions = []
 
-    def place(self, k, i):
-        """ Checks if k Queen can be placed in i column (True)
-        or if the are attacking queens in row or diagonal (False)
-        """
-
-        # j checks from 1 to k - 1 (Up to previous queen)
-        for j in range(1, k):
-            # There is already a queen in column
-            # or a queen in same diagonal
-            if self.x[j] == i or \
-               abs(self.x[j] - i) == abs(j - k):
+    def queen_placement(self, currPos, col):
+        """Checks if the queen can be placed in a specific column"""
+        for prevPos in range(1, currPos):
+            if self.queenPos[prevPos] == col or \
+                    abs(self.queenPos[prevPos] - col) \
+                    == abs(prevPos - currPos):
                 return 0
         return 1
 
-    def nQueen(self, k):
-        """ Tries to place every queen in the board
-        Args:
-        k: starting queen from which to evaluate (should be 1)
-        """
-        # i goes from column 1 to column n (1st column is 1st index)
-        for i in range(1, self.n + 1):
-            if self.place(k, i):
-                # Queen can be placed in i column
-                self.x[k] = i
-                if k == self.n:
-                    # Placed all 4 Queens (A solution was found)
+    def nqueens(self, currPos):
+        """Solve NQueens by trying to place on queens on board"""
+        for col in range(1, self.size + 1):
+            if self.queen_placement(currPos, col):
+                self.queenPos[currPos] = col
+                if currPos == self.size:
                     solution = []
-                    for i in range(1, self.n + 1):
-                        solution.append([i - 1, self.x[i] - 1])
-                    self.res.append(solution)
+                    for col in range(1, self.size + 1):
+                        solution.append([col - 1, self.queenPos[col] - 1])
+                    self.solutions.append(solution)
                 else:
-                    # Need to place more Queens
-                    self.nQueen(k + 1)
-        return self.res
+                    self.nqueens(currPos + 1)
+        return self.solutions
 
-
-# Main
 
 if len(sys.argv) != 2:
     print("Usage: nqueens N")
@@ -66,8 +52,8 @@ if N < 4:
     print("N must be at least 4")
     sys.exit(1)
 
-queen = NQueen(N)
-res = queen.nQueen(1)
+queen = NQueens(N)
+solutions = queen.nqueens(1)
 
-for i in res:
-    print(i)
+for col in solutions:
+    print(col)
