@@ -4,15 +4,15 @@
 
 def rotate_2d_matrix(matrix):
     """In-place rotation of a rectangular 2D list"""
-    if type(matrix) is not list:
+    if type(matrix) != list:
         return
-    if not matrix:
+    if len(matrix) <= 0:
         return
     if not all(map(lambda row: type(row) == list, matrix)):
         return
     rowCount = len(matrix)
     colCount = len(matrix[0])
-    if not all(len(row) == colCount for row in matrix):
+    if not all(map(lambda row: len(row) == colCount, matrix)):
         return
     currCol, currRow = 0, rowCount - 1
     for idx in range(colCount * rowCount):
