@@ -1,27 +1,29 @@
 #!/usr/bin/python3
-"""Module for performing in-place rotation of a 2D matrix"""
+"""2D matrix rotation module.
+"""
 
 
 def rotate_2d_matrix(matrix):
-    """In-place rotation of a rectangular 2D list (matrix)"""
+    """Rotates an m by n 2D matrix in place.
+    """
     if type(matrix) != list:
         return
     if len(matrix) <= 0:
         return
-    if not all(map(lambda row: type(row) == list, matrix)):
+    if not all(map(lambda x: type(x) == list, matrix)):
         return
-    rowCount = len(matrix)
-    colCount = len(matrix[0])
-    if not all(map(lambda row: len(row) == colCount, matrix)):
+    rows = len(matrix)
+    cols = len(matrix[0])
+    if not all(map(lambda x: len(x) == cols, matrix)):
         return
-    currCol, currRow = 0, rowCount - 1
-    for idx in range(colCount * rowCount):
-        if idx % rowCount == 0:
+    c, r = 0, rows - 1
+    for i in range(cols * rows):
+        if i % rows == 0:
             matrix.append([])
-        if currRow == -1:
-            currRow = rowCount - 1
-            currCol += 1
-        matrix[-1].append(matrix[currRow][currCol])
-        if currCol == colCount - 1 and currRow >= -1:
-            matrix.pop(currRow)
-        currRow -= 1
+        if r == -1:
+            r = rows - 1
+            c += 1
+        matrix[-1].append(matrix[r][c])
+        if c == cols - 1 and r >= -1:
+            matrix.pop(r)
+        r -= 1
