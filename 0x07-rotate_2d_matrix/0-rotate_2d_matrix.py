@@ -3,7 +3,7 @@
 
 
 def rotate_2d_matrix(matrix):
-    """In-place rotation of a rectangular 2D list"""
+    """In-place rotation of a rectangular 2D list (matrix)"""
     if type(matrix) != list:
         return
     if len(matrix) <= 0:
