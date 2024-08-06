@@ -1,28 +1,24 @@
 #!/usr/bin/python3
-"""Prime game module.
-"""
+"""Module for prime number game strategy"""
 
 
 def isWinner(x, nums):
-    """Determines the winner of a prime game session with `x` rounds.
-    """
+    """Evaluate the winner after playing `x` number of rounds"""
     if x < 1 or not nums:
         return None
-    marias_wins, bens_wins = 0, 0
-    # generate primes with a limit of the maximum number in nums
+    marias_score, bens_score = 0, 0
     n = max(nums)
-    primes = [True for _ in range(1, n + 1, 1)]
-    primes[0] = False
-    for i, is_prime in enumerate(primes, 1):
-        if i == 1 or not is_prime:
+    prime_flags = [True for _ in range(1, n + 1, 1)]
+    prime_flags[0] = False
+    for idx, flag in enumerate(prime_flags, 1):
+        if idx == 1 or not flag:
             continue
-        for j in range(i + i, n + 1, i):
-            primes[j - 1] = False
-    # filter the number of primes less than n in nums for each round
+        for multiple in range(idx + 1, n + 1, idx):
+            prime_flags[multiple - 1] = False
     for _, n in zip(range(x), nums):
-        primes_count = len(list(filter(lambda x: x, primes[0: n])))
-        bens_wins += primes_count % 2 == 0
-        marias_wins += primes_count % 2 == 1
-    if marias_wins == bens_wins:
+        primes_cnt = len(list(filter(lambda x: x, prime_flags[0: n])))
+        bens_score += primes_cnt % 2 == 0
+        marias_score += primes_cnt % 2 == 1
+    if marias_score == bens_score:
         return None
-    return 'Maria' if marias_wins > bens_wins else 'Ben'
+    return 'Maria' if marias_score > bens_score else 'Ben'
