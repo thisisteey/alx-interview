@@ -13,7 +13,7 @@ def isWinner(x, nums):
     for idx, flag in enumerate(prime_flags, 1):
         if idx == 1 or not flag:
             continue
-        for multiple in range(idx + 1, n + 1, idx):
+        for multiple in range(idx + idx, n + 1, idx):
             prime_flags[multiple - 1] = False
     for _, n in zip(range(x), nums):
         primes_cnt = len(list(filter(lambda x: x, prime_flags[0: n])))
